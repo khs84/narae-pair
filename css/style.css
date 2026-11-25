@@ -1,0 +1,297 @@
+/* 나래 짝꿍 카드 — 전자칠판(터치) 기준 스타일
+ * 화면 요소는 rem 기준(화면 크기에 맞춰 html 글자 크기가 자동으로 바뀜),
+ * 화폐 그림은 em 기준이라 카드 크기에 맞춰 자동으로 줄어듭니다. */
+:root {
+  --bg: #f3f4fb;
+  --panel: #ffffff;
+  --ink: #2b2b2b;
+  --muted: #646678;
+  --main: #4b5bb8;
+  --main-d: #343f8a;
+  --green: #2f7d5b;
+  --green-d: #1f5c42;
+  --yellow: #ffd43b;
+  --red: #e5534b;
+  --line: #dfe1ee;
+  --b1000: #8cc4ea;
+  --b1000-d: #3d7fb0;
+  --b5000: #f2b37a;
+  --b5000-d: #b8642a;
+  --coin: #d9dde2;
+  --coin-d: #8d959e;
+  --coin500: #e3dcc6;
+  --shadow: 0 .25rem .8rem rgba(40, 45, 90, .15);
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+html {
+  font-size: max(12px, min(2.25vh, 1.3vw));
+  -webkit-text-size-adjust: 100%;
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Pretendard", "Malgun Gothic", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+  overflow: hidden;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+button, select, input { font: inherit; color: inherit; }
+button { cursor: pointer; touch-action: manipulation; }
+[hidden] { display: none !important; }
+
+#app { height: 100vh; height: 100dvh; display: flex; flex-direction: column; }
+
+/* ---------- 상단 바 ---------- */
+.topbar {
+  display: flex; align-items: center; gap: 1rem;
+  padding: .6rem 1.2rem;
+  background: var(--main); color: #fff;
+  box-shadow: var(--shadow);
+  flex: none;
+}
+.brand {
+  background: none; border: 0; color: #fff;
+  font-size: 1.6rem; font-weight: 800; padding: .3rem .4rem;
+  display: flex; gap: .4rem; align-items: center; white-space: nowrap;
+}
+.stamps { flex: 1; display: flex; justify-content: center; gap: .5rem; }
+.stamp {
+  width: 2.6rem; height: 2.6rem; border-radius: 50%;
+  border: .2rem dashed rgba(255,255,255,.6);
+  display: grid; place-items: center; font-size: 1.5rem;
+}
+.stamp.on { border: .2rem solid var(--yellow); background: rgba(255, 212, 59, .25); animation: pop .5s; }
+.tools { display: flex; gap: .5rem; }
+.tool {
+  background: rgba(255,255,255,.15); border: 0; color: #fff; border-radius: .8rem;
+  padding: .5rem .9rem; font-size: 1.3rem; display: flex; align-items: center; gap: .4rem;
+  min-height: 3.2rem;
+}
+.tool span { font-size: 1rem; }
+.tool:active { background: rgba(255,255,255,.3); }
+
+/* ---------- 공통 화면 ---------- */
+.screen { flex: 1; min-height: 0; display: flex; flex-direction: column; padding: 1rem 1.6rem; gap: .9rem; animation: fade .35s; }
+.screen-title { margin: 0; text-align: center; font-size: 1.8rem; }
+
+.btn {
+  border: 0; border-radius: 1rem; padding: .8rem 1.5rem; font-size: 1.4rem; font-weight: 700;
+  min-height: 3.8rem; box-shadow: var(--shadow);
+  transition: transform .1s;
+}
+.btn:active { transform: scale(.96); }
+.btn.go { background: var(--main); color: #fff; }
+.btn.soft { background: #fff; color: var(--main-d); border: .15rem solid var(--line); }
+
+/* ---------- 시작 ---------- */
+#screenStart { justify-content: center; align-items: center; gap: 1.8rem; }
+.hero { text-align: center; }
+.hero-emoji { font-size: 4.6rem; line-height: 1; animation: bounce 2s infinite; }
+.hero h1 { font-size: 2.8rem; margin: .5rem 0; color: var(--main-d); }
+.hero p { font-size: 1.5rem; margin: 0; color: var(--muted); }
+.modes { display: flex; gap: 1.5rem; flex-wrap: wrap; justify-content: center; }
+.mode-card {
+  width: 18rem; min-height: 14rem; border: 0; border-radius: 1.6rem; background: var(--panel);
+  box-shadow: var(--shadow); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .5rem;
+  border-bottom: .5rem solid var(--c); transition: transform .12s;
+}
+.mode-card:active { transform: translateY(.3rem) scale(.98); }
+.mode-card.m1 { --c: var(--b1000-d); }
+.mode-card.m2 { --c: var(--b5000-d); }
+.mode-card.m3 { --c: var(--green); }
+.mode-step { background: var(--c); color: #fff; border-radius: 2rem; padding: .2rem 1rem; font-weight: 700; font-size: 1.1rem; }
+.mode-emoji { font-size: 3.8rem; }
+.mode-card strong { font-size: 1.5rem; }
+.mode-card small { font-size: 1.05rem; color: var(--muted); }
+.option-rows { display: flex; flex-direction: column; gap: .8rem; align-items: center; }
+.goal-row { display: flex; align-items: center; gap: 1rem; font-size: 1.3rem; font-weight: 700; }
+.goal-row > span { min-width: 6rem; text-align: right; }
+.seg { display: flex; background: #fff; border-radius: 1rem; box-shadow: var(--shadow); overflow: hidden; }
+.seg button { border: 0; background: none; padding: .7rem 1.4rem; font-size: 1.25rem; min-height: 3.5rem; }
+.seg button.on { background: var(--main); color: #fff; font-weight: 700; }
+
+/* ---------- 놀이판 ---------- */
+.board { flex: 1; min-height: 0; display: grid; gap: 1rem; }
+.board.n6 { grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, 1fr); }
+.board.n8 { grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(2, 1fr); }
+.board.n12 { grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(3, 1fr); }
+.board-actions { flex: none; display: flex; gap: .8rem; justify-content: center; }
+.board-actions .go { min-width: 14rem; }
+
+.card {
+  position: relative; border: 0; padding: 0; background: none; min-width: 0; min-height: 0;
+  perspective: 90rem; transition: transform .15s; animation: deal .4s backwards;
+}
+.card .inner { position: absolute; inset: 0; display: block; transition: transform .45s; transform-style: preserve-3d; }
+.card.down .inner { transform: rotateY(180deg); }
+.face {
+  position: absolute; inset: 0; border-radius: 1.2rem; overflow: hidden;
+  -webkit-backface-visibility: hidden; backface-visibility: hidden;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  box-shadow: var(--shadow);
+}
+.face.front { background: #fff; border: .3rem solid var(--line); padding: 2.2rem .5rem .6rem; }
+.face.back {
+  transform: rotateY(180deg);
+  background:
+    radial-gradient(circle, rgba(255,255,255,.18) 0 .35rem, transparent .4rem) 0 0 / 2rem 2rem,
+    linear-gradient(135deg, var(--main), var(--main-d));
+  border: .3rem solid #fff; color: #fff;
+}
+.face.back b { font-size: 4.5rem; line-height: 1; text-shadow: 0 .2rem .4rem rgba(0,0,0,.3); }
+.face.back small { font-size: 1.1rem; opacity: .85; margin-top: .3rem; }
+.chip {
+  position: absolute; top: .45rem; left: .55rem; font-size: 1rem; font-weight: 800;
+  padding: .1rem .7rem; border-radius: 1rem; background: var(--cc, #eee); color: #fff;
+}
+.k-money .front { background: #fdf6e8; }
+.k-money .chip { --cc: #9a6a3a; }
+.k-amount .chip { --cc: var(--main); }
+.k-item .chip { --cc: var(--green); }
+
+.card:active:not(.done) { transform: scale(.97); }
+.card.sel { transform: translateY(-.35rem); z-index: 2; }
+.card.sel .front { border-color: var(--yellow); box-shadow: 0 0 0 .35rem var(--yellow), 0 .8rem 1.4rem rgba(0,0,0,.2); }
+.card.no .front { border-color: var(--red); }
+.card.no { animation: shake .45s; }
+.card.done { pointer-events: none; }
+.card.done .front { border-color: var(--green); background: #eaf6ef; }
+.card.done .front > :not(.badge):not(.run) { opacity: .75; }
+.badge {
+  position: absolute; top: .4rem; right: .5rem; min-width: 2.3rem; height: 2.3rem; border-radius: 1.2rem;
+  background: var(--green); color: #fff; font-weight: 800; font-size: 1.1rem;
+  display: grid; place-items: center; padding: 0 .4rem; animation: pop .5s;
+}
+.run {
+  position: absolute; bottom: .5rem; left: 50%; transform: translateX(-50%); white-space: nowrap; z-index: 60;
+  background: var(--main); color: #fff; font-size: 1.5rem; font-weight: 800; padding: .2rem 1rem; border-radius: .8rem;
+  box-shadow: var(--shadow); animation: pop .3s;
+}
+
+/* 금액 카드 */
+.amt {
+  display: flex; flex-direction: column; align-items: center; background: var(--yellow);
+  border-radius: .8rem; padding: .5rem 1.6rem; box-shadow: 0 .25rem 0 #d9a900;
+}
+.amt b { font-size: 2.8rem; letter-spacing: .02em; line-height: 1.1; }
+.amt small { font-size: 1.3rem; color: #6b5400; }
+.board.n12 .amt b { font-size: 2.3rem; }
+/* 물건 카드 */
+.item-emoji { font-size: 4.2rem; line-height: 1.3; margin-bottom: .3rem; filter: drop-shadow(0 .3rem .2rem rgba(0,0,0,.15)); }
+.item-name { font-size: 1.35rem; font-weight: 800; }
+.board.n12 .k-item .front {
+  display: grid; grid-template-columns: auto auto; grid-template-rows: auto auto;
+  align-content: center; justify-content: center; align-items: center; column-gap: .8rem; padding-top: 2rem;
+}
+.board.n12 .item-emoji { grid-row: 1 / 3; font-size: 3.8rem; margin: 0; }
+.board.n12 .item-name { align-self: end; text-align: center; }
+.board.n12 .k-item .tag { align-self: start; }
+.tag {
+  display: inline-flex; flex-direction: column; align-items: center;
+  background: var(--yellow); border-radius: .5rem; padding: .15rem .9rem; margin-top: .25rem;
+  box-shadow: 0 .2rem 0 #d9a900;
+}
+.tag b { font-size: 1.5rem; }
+.tag small { font-size: .95rem; color: #6b5400; }
+
+/* ---------- 화폐 (em 기준) ---------- */
+.pile { display: flex; flex-direction: column; align-items: center; gap: .55em; width: max-content; flex: none; }
+.pile .row { display: flex; align-items: center; }
+.pile .row.coins { gap: .3em; }
+.pile .row.bills .money + .money { margin-left: -5em; }
+.money { position: relative; flex: none; font-weight: 800; transition: transform .2s, box-shadow .2s; }
+.bill {
+  width: 11em; height: 5.4em; border-radius: .5em;
+  background: var(--bc); border: .2em solid var(--bd);
+  box-shadow: inset 0 0 0 .35em rgba(255,255,255,.35), .15em .2em .4em rgba(0,0,0,.25);
+  display: grid; grid-template-columns: 1fr 1.2fr; align-items: center; overflow: hidden;
+}
+.bill.b1000 { --bc: var(--b1000); --bd: var(--b1000-d); }
+.bill.b5000 { --bc: var(--b5000); --bd: var(--b5000-d); }
+.bill .seal { font-size: 1.5em; width: 2.27em; height: 2.27em; margin-left: .53em; border-radius: 50%; background: rgba(255,255,255,.55); border: .1em solid var(--bd); display: grid; place-items: center; }
+.bill .val { display: flex; flex-direction: column; align-items: flex-end; padding-right: .9em; color: #1f2a33; line-height: 1.05; }
+.bill .val b { font-size: 1.9em; }
+.bill .val i { font-style: normal; font-size: 1em; }
+.coin {
+  width: 5em; height: 5em; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #fff 0 12%, var(--cc) 45%, var(--cd) 100%);
+  border: .2em solid var(--cd); box-shadow: inset 0 0 0 .3em rgba(255,255,255,.4), 0 .2em .35em rgba(0,0,0,.25);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; color: #2b3138; line-height: 1;
+}
+.coin.c100 { --cc: var(--coin); --cd: var(--coin-d); }
+.coin.c500 { --cc: var(--coin500); --cd: #9a9070; width: 5.6em; height: 5.6em; }
+.coin b { font-size: 1.45em; }
+.coin i { font-style: normal; font-size: .8em; }
+.money.counting { transform: translateY(-.7em) scale(1.08); box-shadow: 0 0 0 .4em var(--yellow), 0 .6em 1em rgba(0,0,0,.25); z-index: 50 !important; }
+
+/* ---------- 끝 ---------- */
+.finish { flex: 1; min-height: 0; display: flex; gap: 2.5rem; align-items: center; justify-content: center; }
+.finish-cheer { text-align: center; }
+.finish-cheer h1 { font-size: 3rem; margin: .4rem 0; color: var(--main-d); }
+.finish-cheer p { font-size: 1.6rem; margin: 0 0 1.5rem; }
+.finish-actions { display: flex; gap: 1rem; justify-content: center; }
+.album { background: #fff; border-radius: 1.4rem; box-shadow: var(--shadow); padding: 1.2rem 1.4rem; max-height: 100%; overflow: auto; animation: slideup .6s; }
+.album h3 { margin: 0 0 .8rem; font-size: 1.5rem; text-align: center; }
+.album-list { display: grid; grid-template-columns: repeat(2, auto); gap: .7rem 1.4rem; }
+.album-item { display: flex; align-items: center; gap: .8rem; padding: .5rem .8rem; border-radius: 1rem; background: #f6f7fc; }
+.album-item .pile { font-size: .3rem; }
+.album-item .eq { font-size: 1.6rem; font-weight: 800; color: var(--main); }
+.album-item .amt { padding: .2rem .8rem; }
+.album-item .amt b { font-size: 1.5rem; }
+.album-item .amt small { font-size: .9rem; }
+.album-item .ae { font-size: 2.6rem; }
+
+/* ---------- 설정 ---------- */
+dialog { border: 0; border-radius: 1.4rem; padding: 0; box-shadow: 0 1rem 3rem rgba(0,0,0,.3); width: min(40rem, 92vw); }
+dialog::backdrop { background: rgba(20, 22, 45, .45); }
+.settings { padding: 1.6rem 2rem; display: flex; flex-direction: column; gap: 1rem; font-size: 1.2rem; }
+.settings h2 { margin: 0 0 .4rem; }
+.settings .row { display: flex; align-items: center; gap: 1rem; }
+.settings .row > span:first-child { min-width: 7rem; font-weight: 700; }
+.settings select { flex: 1; padding: .6rem; border-radius: .6rem; border: .12rem solid var(--line); min-height: 3rem; }
+.settings input[type=range] { flex: 1; height: 2.5rem; }
+.settings .check input { width: 1.8rem; height: 1.8rem; }
+.settings .check span { font-weight: 400 !important; min-width: 0 !important; }
+.settings .hint { margin: -.4rem 0 0; font-size: 1rem; color: var(--muted); }
+.settings-actions { display: flex; justify-content: flex-end; gap: .8rem; margin-top: .6rem; }
+
+/* ---------- 알림·효과 ---------- */
+.toast {
+  position: fixed; left: 50%; top: 16%; transform: translate(-50%, -1rem); opacity: 0; pointer-events: none;
+  background: #fff; border-radius: 1.4rem; padding: 1.1rem 2.2rem; font-size: 2rem; font-weight: 800;
+  box-shadow: 0 .8rem 2rem rgba(0,0,0,.2); transition: opacity .25s, transform .25s; text-align: center; z-index: 100;
+}
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+.toast.good { color: var(--green-d); border: .3rem solid var(--green); }
+.toast.bad { color: #b8392f; border: .3rem solid var(--red); }
+.fx { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 99; }
+.confetti { position: absolute; top: -2rem; font-size: 2rem; animation: fall linear forwards; }
+.shake { animation: shake .4s; }
+
+@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes pop { 0% { transform: scale(.6); } 60% { transform: scale(1.12); } 100% { transform: scale(1); } }
+@keyframes deal { from { transform: translateY(2rem) scale(.8); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-.6rem); } }
+@keyframes shake { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-.6rem); } 40%, 80% { transform: translateX(.6rem); } }
+@keyframes fall { to { transform: translateY(110vh) rotate(540deg); } }
+@keyframes slideup { from { transform: translateY(3rem); opacity: 0; } to { transform: none; opacity: 1; } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
+
+/* 세로 화면(태블릿 세로 등) */
+@media (max-aspect-ratio: 1/1) {
+  html { font-size: max(11px, 1.9vw); }
+  .board.n6 { grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(3, 1fr); }
+  .board.n8 { grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(4, 1fr); }
+  .board.n12 { grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(4, 1fr); }
+  .finish { flex-direction: column; gap: 1.5rem; }
+  .album-list { grid-template-columns: 1fr; }
+  .tool span, .brand span { display: none; }
+  .seg button { padding: .6rem .8rem; font-size: 1.1rem; }
+}
